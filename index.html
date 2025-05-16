@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -82,11 +43,21 @@
     };
     let collectedIngredients = [];
 
+    function preload() {
+      ingredients[0].img = loadImage('https://via.placeholder.com/50?text=Chicken');
+      ingredients[1].img = loadImage('https://via.placeholder.com/50?text=Rice');
+      ingredients[2].img = loadImage('https://via.placeholder.com/50?text=Cucumber');
+      ingredients[3].img = loadImage('https://via.placeholder.com/50?text=Prawns');
+      ingredients[4].img = loadImage('https://via.placeholder.com/50?text=Coconut+Milk');
+      ingredients[5].img = loadImage('https://via.placeholder.com/50?text=Noodles');
+      ingredients[6].img = loadImage('https://via.placeholder.com/50?text=Crab');
+      ingredients[7].img = loadImage('https://via.placeholder.com/50?text=Chilli+Sauce');
+      ingredients[8].img = loadImage('https://via.placeholder.com/50?text=Egg');
+    }
+
     function setup() {
       let canvas = createCanvas(900, 600);
       canvas.parent('game-container');
-      textAlign(CENTER, CENTER);
-      textSize(16);
     }
 
     function draw() {
@@ -98,10 +69,9 @@
       text("Plate", plate.x, plate.y);
       // Draw ingredients
       for (let ing of ingredients) {
-        fill(200, 200, 255);
-        ellipse(ing.x, ing.y, 50);
-        fill(0);
-        text(ing.name, ing.x, ing.y);
+        if (ing.img) {
+          image(ing.img, ing.x - 25, ing.y - 25, 50, 50);
+        }
       }
     }
 
@@ -138,13 +108,13 @@
       let required = dishes[currentDish];
       let correct = collectedIngredients.filter(ing => required.includes(ing));
       if (correct.length === required.length && collectedIngredients.length === required.length) {
-        feedback.textContent = `Success! You made ${currentDish}!`;
+        feedback.textContent = Success! You made ${currentDish}!;
         setTimeout(nextDish, 2000);
       } else if (collectedIngredients.length > required.length) {
         feedback.textContent = "Incorrect! Try again.";
         collectedIngredients = [];
       } else {
-        feedback.textContent = `Added ${collectedIngredients.join(', ')}. Keep going!`;
+        feedback.textContent = Added ${collectedIngredients.join(', ')}. Keep going!;
       }
     }
 
@@ -152,7 +122,7 @@
       collectedIngredients = [];
       let dishNames = Object.keys(dishes);
       currentDish = dishNames[(dishNames.indexOf(currentDish) + 1) % dishNames.length];
-      document.getElementById('dish-display').textContent = `Current Dish: ${currentDish}`;
+      document.getElementById('dish-display').textContent = Current Dish: ${currentDish};
       document.getElementById('feedback').textContent = "Drag ingredients to the plate!";
     }
   </script>
