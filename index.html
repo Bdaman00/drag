@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Singapore Food Drag Game</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/addons/p5.dom.min.js"></script>
@@ -15,7 +15,6 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      margin: 0;
     }
     #game-container {
       background-color: white;
@@ -35,8 +34,6 @@
     canvas {
       border: 2px solid #d1d5db;
       border-radius: 0.5rem;
-      display: block;
-      margin-top: 1rem;
     }
   </style>
 </head>
@@ -61,7 +58,7 @@
     ];
 
     let selectedIngredient = null;
-    let plate = { x: 450, y: 400, radius: 100 };
+    let plate = { x: 400, y: 400, radius: 100 };
     let currentDish = "Hainanese Chicken Rice";
     let dishes = {
       "Hainanese Chicken Rice": ["Chicken", "Rice", "Cucumber"],
@@ -71,31 +68,32 @@
     let collectedIngredients = [];
 
     function preload() {
-      ingredients[0].img = loadImage('images/chicken.jpg');
-      ingredients[1].img = loadImage('images/rice.jpg');
-      ingredients[2].img = loadImage('images/cucumber.jpg');
-      ingredients[3].img = loadImage('images/Prawns-Cooked.jpg');
-      ingredients[4].img = loadImage('images/coconut_milk.jpg');
-      ingredients[5].img = loadImage('images/noodles.jpg');
-      ingredients[6].img = loadImage('images/Crab.jpg');
-      ingredients[7].img = loadImage('images/chilisauce.jpg');
-      ingredients[8].img = loadImage('images/brown-egg.jpg');
+      ingredients[0].img = loadImage('chicken.jpg');
+      ingredients[1].img = loadImage('rice.jpg');
+      ingredients[2].img = loadImage('cucumber.jpg');
+      ingredients[3].img = loadImage('Prawns-Cooked.jpg');
+      ingredients[4].img = loadImage('coconut_milk.jpg');
+      ingredients[5].img = loadImage('noodles.jpg');
+      ingredients[6].img = loadImage('Crab.jpg');
+      ingredients[7].img = loadImage('chilisauce.jpg');
+      ingredients[8].img = loadImage('brown-egg.jpg');
     }
 
     function setup() {
       let canvas = createCanvas(900, 600);
       canvas.parent('game-container');
-      textAlign(CENTER, CENTER);
     }
 
     function draw() {
       background(220);
+
       // Draw plate
       fill(255);
       stroke(0);
       ellipse(plate.x, plate.y, plate.radius * 2);
       fill(0);
       noStroke();
+      textAlign(CENTER, CENTER);
       text("Plate", plate.x, plate.y);
 
       // Draw ingredients
@@ -127,9 +125,7 @@
       if (selectedIngredient) {
         let d = dist(selectedIngredient.x, selectedIngredient.y, plate.x, plate.y);
         if (d < plate.radius) {
-          if (!collectedIngredients.includes(selectedIngredient.name)) {
-            collectedIngredients.push(selectedIngredient.name);
-          }
+          collectedIngredients.push(selectedIngredient.name);
           checkDish();
         }
         selectedIngredient = null;
@@ -142,13 +138,13 @@
       let correct = collectedIngredients.filter(ing => required.includes(ing));
 
       if (correct.length === required.length && collectedIngredients.length === required.length) {
-        feedback.textContent = `Success! You made ${currentDish}!`;
+        feedback.textContent = `✅ Success! You made ${currentDish}!`;
         setTimeout(nextDish, 2000);
       } else if (collectedIngredients.length > required.length) {
-        feedback.textContent = "Incorrect! Try again.";
+        feedback.textContent = "❌ Incorrect! Try again.";
         collectedIngredients = [];
       } else {
-        feedback.textContent = `Added ${collectedIngredients.join(', ')}. Keep going!`;
+        feedback.textContent = `🧺 Added: ${collectedIngredients.join(', ')}. Keep going!`;
       }
     }
 
@@ -162,4 +158,3 @@
   </script>
 </body>
 </html>
-
