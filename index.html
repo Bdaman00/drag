@@ -1,40 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Singapore Food Drag Game</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/addons/p5.dom.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      background-color: #f3f4f6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-    #game-container {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-    #dish-display {
-      font-size: 1.25rem;
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
-    #feedback {
-      font-size: 1.125rem;
-      margin-top: 1rem;
-    }
-    canvas {
-      border: 2px solid #d1d5db;
-      border-radius: 0.5rem;
-    }
+    body { @apply bg-gray-100 flex flex-col items-center justify-center min-h-screen; }
+    #game-container { @apply bg-white p-6 rounded-lg shadow-lg; }
+    #dish-display { @apply text-xl font-bold mb-4; }
+    #feedback { @apply text-lg mt-4; }
+    canvas { @apply border-2 border-gray-300 rounded; }
   </style>
 </head>
 <body>
@@ -43,7 +21,6 @@
     <div id="dish-display">Current Dish: Hainanese Chicken Rice</div>
     <div id="feedback">Drag ingredients to the plate!</div>
   </div>
-
   <script>
     let ingredients = [
       { name: "Chicken", x: 50, y: 50, for: "Hainanese Chicken Rice", img: null },
@@ -56,7 +33,6 @@
       { name: "Chilli Sauce", x: 750, y: 50, for: "Chilli Crab", img: null },
       { name: "Egg", x: 850, y: 50, for: "Chilli Crab", img: null },
     ];
-
     let selectedIngredient = null;
     let plate = { x: 400, y: 400, radius: 100 };
     let currentDish = "Hainanese Chicken Rice";
@@ -68,15 +44,15 @@
     let collectedIngredients = [];
 
     function preload() {
-      ingredients[0].img = loadImage('chicken.jpg');
-      ingredients[1].img = loadImage('rice.jpg');
-      ingredients[2].img = loadImage('cucumber.jpg');
-      ingredients[3].img = loadImage('Prawns-Cooked.jpg');
-      ingredients[4].img = loadImage('coconut_milk.jpg');
-      ingredients[5].img = loadImage('noodles.jpg');
-      ingredients[6].img = loadImage('Crab.jpg');
-      ingredients[7].img = loadImage('chilisauce.jpg');
-      ingredients[8].img = loadImage('brown-egg.jpg');
+      ingredients[0].img = loadImage('https://via.placeholder.com/50?text=Chicken');
+      ingredients[1].img = loadImage('https://via.placeholder.com/50?text=Rice');
+      ingredients[2].img = loadImage('https://via.placeholder.com/50?text=Cucumber');
+      ingredients[3].img = loadImage('https://via.placeholder.com/50?text=Prawns');
+      ingredients[4].img = loadImage('https://via.placeholder.com/50?text=Coconut+Milk');
+      ingredients[5].img = loadImage('https://via.placeholder.com/50?text=Noodles');
+      ingredients[6].img = loadImage('https://via.placeholder.com/50?text=Crab');
+      ingredients[7].img = loadImage('https://via.placeholder.com/50?text=Chilli+Sauce');
+      ingredients[8].img = loadImage('https://via.placeholder.com/50?text=Egg');
     }
 
     function setup() {
@@ -86,16 +62,11 @@
 
     function draw() {
       background(220);
-
       // Draw plate
       fill(255);
       stroke(0);
       ellipse(plate.x, plate.y, plate.radius * 2);
-      fill(0);
-      noStroke();
-      textAlign(CENTER, CENTER);
       text("Plate", plate.x, plate.y);
-
       // Draw ingredients
       for (let ing of ingredients) {
         if (ing.img) {
@@ -136,15 +107,14 @@
       let feedback = document.getElementById('feedback');
       let required = dishes[currentDish];
       let correct = collectedIngredients.filter(ing => required.includes(ing));
-
       if (correct.length === required.length && collectedIngredients.length === required.length) {
-        feedback.textContent = `✅ Success! You made ${currentDish}!`;
+        feedback.textContent = Success! You made ${currentDish}!;
         setTimeout(nextDish, 2000);
       } else if (collectedIngredients.length > required.length) {
-        feedback.textContent = "❌ Incorrect! Try again.";
+        feedback.textContent = "Incorrect! Try again.";
         collectedIngredients = [];
       } else {
-        feedback.textContent = `🧺 Added: ${collectedIngredients.join(', ')}. Keep going!`;
+        feedback.textContent = Added ${collectedIngredients.join(', ')}. Keep going!;
       }
     }
 
@@ -152,7 +122,7 @@
       collectedIngredients = [];
       let dishNames = Object.keys(dishes);
       currentDish = dishNames[(dishNames.indexOf(currentDish) + 1) % dishNames.length];
-      document.getElementById('dish-display').textContent = `Current Dish: ${currentDish}`;
+      document.getElementById('dish-display').textContent = Current Dish: ${currentDish};
       document.getElementById('feedback').textContent = "Drag ingredients to the plate!";
     }
   </script>
