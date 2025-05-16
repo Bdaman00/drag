@@ -43,21 +43,11 @@
     };
     let collectedIngredients = [];
 
-    function preload() {
-      ingredients[0].img = loadImage('https://via.placeholder.com/50?text=Chicken');
-      ingredients[1].img = loadImage('https://via.placeholder.com/50?text=Rice');
-      ingredients[2].img = loadImage('https://via.placeholder.com/50?text=Cucumber');
-      ingredients[3].img = loadImage('https://via.placeholder.com/50?text=Prawns');
-      ingredients[4].img = loadImage('https://via.placeholder.com/50?text=Coconut+Milk');
-      ingredients[5].img = loadImage('https://via.placeholder.com/50?text=Noodles');
-      ingredients[6].img = loadImage('https://via.placeholder.com/50?text=Crab');
-      ingredients[7].img = loadImage('https://via.placeholder.com/50?text=Chilli+Sauce');
-      ingredients[8].img = loadImage('https://via.placeholder.com/50?text=Egg');
-    }
-
     function setup() {
       let canvas = createCanvas(900, 600);
       canvas.parent('game-container');
+      textAlign(CENTER, CENTER);
+      textSize(16);
     }
 
     function draw() {
@@ -69,9 +59,10 @@
       text("Plate", plate.x, plate.y);
       // Draw ingredients
       for (let ing of ingredients) {
-        if (ing.img) {
-          image(ing.img, ing.x - 25, ing.y - 25, 50, 50);
-        }
+        fill(200, 200, 255);
+        ellipse(ing.x, ing.y, 50);
+        fill(0);
+        text(ing.name, ing.x, ing.y);
       }
     }
 
@@ -108,13 +99,13 @@
       let required = dishes[currentDish];
       let correct = collectedIngredients.filter(ing => required.includes(ing));
       if (correct.length === required.length && collectedIngredients.length === required.length) {
-        feedback.textContent = Success! You made ${currentDish}!;
+        feedback.textContent = `Success! You made ${currentDish}!`;
         setTimeout(nextDish, 2000);
       } else if (collectedIngredients.length > required.length) {
         feedback.textContent = "Incorrect! Try again.";
         collectedIngredients = [];
       } else {
-        feedback.textContent = Added ${collectedIngredients.join(', ')}. Keep going!;
+        feedback.textContent = `Added ${collectedIngredients.join(', ')}. Keep going!`;
       }
     }
 
@@ -122,7 +113,7 @@
       collectedIngredients = [];
       let dishNames = Object.keys(dishes);
       currentDish = dishNames[(dishNames.indexOf(currentDish) + 1) % dishNames.length];
-      document.getElementById('dish-display').textContent = Current Dish: ${currentDish};
+      document.getElementById('dish-display').textContent = `Current Dish: ${currentDish}`;
       document.getElementById('feedback').textContent = "Drag ingredients to the plate!";
     }
   </script>
